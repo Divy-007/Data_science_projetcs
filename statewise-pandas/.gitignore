@@ -1,0 +1,6 @@
+# Ignore data folder inside statewise-pandas
+statewise-pandas/data/
+
+#ignore ipynb checkpoints
+**/.ipynb_checkpoints
+
