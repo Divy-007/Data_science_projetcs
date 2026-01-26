@@ -1,3 +1,4 @@
+/*tuncate the table before loading the dataset for validation of  the data */
 TRUNCATE ecommerce.orders CASCADE;
 TRUNCATE ecommerce.customers CASCADE;
 TRUNCATE ecommerce.payments CASCADE;
@@ -8,14 +9,16 @@ TRUNCATE ecommerce.sellers CASCADE;
 TRUNCATE ecommerce.order_items CASCADE;
 
 
-
+/*loading the data from csv file by using copy command*/
 copy ecommerce.customers from 'D:/Data_science_projects/ecommerce-anayltics/data/raw/olist_customers_dataset.csv'
 delimiter ','
 csv header;
+/*checking if data is load or not */
 SELECT COUNT(*) FROM ecommerce.customers;
 SELECT customer_id
 FROM ecommerce.customers
 LIMIT 5;
+/*checking why error occurs in this row */
 SELECT *
 FROM ecommerce.customers
 WHERE customer_id = '9ef432eb6251297304e76186b10a928d';

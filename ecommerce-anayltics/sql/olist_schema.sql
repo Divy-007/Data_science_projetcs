@@ -1,4 +1,6 @@
+/*drop table to remove wrong assumption*/
 DROP TABLE IF EXISTS ecommerce.customers CASCADE;
+/*create table to define correct ones*/
 Create table ecommerce.customers (
    customer_id varchar primary key,
    customer_unique_id varchar ,
@@ -6,7 +8,7 @@ Create table ecommerce.customers (
    customer_city varchar,
    customer_state varchar
 );
-
+/*selecting from created tables for checking creating or not */
 select * from ecommerce.customers;
 
 
@@ -29,6 +31,7 @@ order_estimated_delivery_date timestamp,
 
 );
 select * from ecommerce.orders;
+/*checking foreign key manually  (SQL audit)*/
 select count(*)
 from ecommerce.orders o
 left join ecommerce.customers c
