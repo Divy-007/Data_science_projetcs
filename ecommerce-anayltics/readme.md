@@ -153,8 +153,7 @@ No assumptions beyond what the data supports.
 ---
 
 ## 📁 Project Structure
-
-📁 Project Structure
+''' text
 ├── sql/
 │   ├── schema.sql
 │   ├── load_data.sql
@@ -177,7 +176,7 @@ No assumptions beyond what the data supports.
 ├── requirements.txt
 └── README.md
 
-
+'''
 ---
 
 ## 🧰 Tech Stack
