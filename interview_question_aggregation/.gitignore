@@ -16,3 +16,6 @@ test_scrpaper.py
 # IDE specific files
 .vscode/
 .idea/
+#database files
+.db
+*.sqlite3
