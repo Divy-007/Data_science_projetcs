@@ -1,191 +1,167 @@
-🛒 Olist E-Commerce Profitability & Incentive Audit
+# 🛒 Olist E-Commerce Profitability & Incentive Audit
 
-(SQL-first analytics + ML-supported decision system)
+*(SQL-first analytics + ML-supported decision system)*
 
-An industry-ready data analytics project built on the Brazilian Olist E-commerce dataset, focused on profitability leakage, incentive failure, and loss-making customer behavior.
+An **industry-ready data analytics project** built on the Brazilian **Olist E-commerce dataset**, focused on **profitability leakage, incentive failure, and loss-making customer behavior**.
 
-This project is intentionally SQL-first and business-driven.
-Machine Learning is used only where it adds decision value, not as a buzzword.
+This project is intentionally **SQL-first** and **business-driven**.  
+Machine Learning is used **only where it adds decision value**, not as a buzzword.
 
-🎯 Business Problem
+---
 
-Most e-commerce companies optimize for revenue and order volume, not profit.
+## 🎯 Business Problem
+
+Most e-commerce companies optimize for **revenue and order volume**, not **profit**.
 
 This creates silent failure modes:
 
-High-revenue customers who consistently destroy margin
+- High-revenue customers who consistently destroy margin  
+- Logistics (freight) costs eroding profitability  
+- Incentive systems that reward unprofitable behavior  
 
-Logistics (freight) costs eroding profitability
+**Core question:**
 
-Incentive systems that reward unprofitable behavior
+> Are incentives and logistics policies rewarding the wrong customers — and how much does it cost the business?
 
-Core question:
+---
 
-Are incentives and logistics policies rewarding the wrong customers — and how much does it cost the business?
+## 🧠 Executive Summary
 
-🧠 Executive Summary (Key Findings)
+- Revenue growth can **hide systematic losses**
+- A **minority of customers** contributes a **disproportionate share of total losses**
+- Loss-making behavior is **repeated**, not random
+- Freight cost is a major hidden driver of unprofitability
 
-Revenue growth can hide systematic losses
+**Conclusion:**  
+Blanket incentive policies are inefficient. **Targeted, profitability-aware decisions are required.**
 
-A minority of customers contributes a disproportionate share of total losses
+---
 
-Loss-making behavior is repeated, not random
+## 🏗️ Architecture & Workflow
 
-Freight cost is a major, often ignored driver of unprofitability
+### Phase 1 — Data Engineering (SQL-First)
 
-Incentives tied to revenue and order frequency reinforce bad economics
+- PostgreSQL as the **single source of truth**
+- Proper schema design with PKs & FKs
+- CSV ingestion via `COPY`
+- Correct customer identity using `customer_unique_id`
 
-Conclusion:
-Blanket incentive policies are inefficient. Targeted, profitability-aware decisions are required.
+---
 
-🏗️ Architecture & Workflow
-Phase 1 — Data Engineering (SQL-First)
+### Phase 2 — SQL Analytics Engineering
 
-PostgreSQL used as the single source of truth
+Business metrics built **layer-by-layer using SQL views**:
 
-Proper schema design with primary and foreign keys
+1. Order Revenue  
+2. Estimated Cost (60% assumption)  
+3. Freight / Logistics Cost  
+4. Order-level Net Profit  
+5. Customer-level Profitability  
+6. Loss-making Customer Identification  
 
-All CSVs loaded using COPY (no Pandas shortcuts)
+Metrics are defined once and reused — no duplicated logic.
 
-Manual validation of critical relationships
+---
 
-Customer identity handled correctly using customer_unique_id
+### Phase 3 — Business Storytelling & Damage Quantification
 
-Phase 2 — SQL Analytics Engineering
+- Revenue vs Profit illusion  
+- Repeated loss-making behavior  
+- Concentration of damage  
+- Incentive failure patterns  
 
-Business metrics are built layer-by-layer using SQL views, not one-off queries.
+> *The system is training customers to be unprofitable — and then rewarding them.*
 
-Core analytical layers:
+---
 
-Order Revenue
+### Phase 4 — Customer Segmentation
 
-Estimated Cost (60% of revenue assumption)
+Rule-based, explainable segmentation:
 
-Freight / Logistics Cost
+- **Profitable** — sustainable profit  
+- **Borderline** — high freight risk / near break-even  
+- **Loss-making** — negative profit or repeated losses  
 
-Order-level Net Profit
+Built for **business action**, not clustering aesthetics.
 
-Customer-level Profitability
+---
 
-Loss-making Customer Identification
+### Phase 5 — Machine Learning (Supporting Role)
 
-Each metric is defined once and reused, ensuring consistency and auditability.
+#### Objective
+Predict whether a customer is **loss-making**, to support incentive decisions.
 
-Phase 3 — Business Storytelling & Damage Quantification
+#### Model
+- Logistic Regression (baseline)
 
-SQL outputs are translated into manager-level insights:
+#### Features
+- Freight ratio  
+- Average order value  
+- Order intensity  
+- Total order count  
 
-Revenue vs Profit illusion
+#### Important Limitation
+Features summarize **full customer history**, so the model acts as a  
+**retrospective risk classifier**, not a real-time predictor.
 
-Repeat loss-making behavior
+ML is used to **validate patterns and standardize risk scoring**.
 
-Concentration of damage
+---
 
-Incentive failure patterns
+### Phase 6 — Deployment (Decision Support)
 
-Key result:
+A lightweight **Streamlit dashboard** shows:
 
-The system is training customers to be unprofitable — and then rewarding them.
+- Customer segment  
+- Key profitability drivers  
+- ML risk score  
+- Incentive recommendation  
 
-Phase 4 — Customer Segmentation (Rule-Based)
+Decisions are **supported**, not automated.
 
-Customers are segmented using explainable, business-aligned rules:
+---
 
-Profitable — sustainable profit, low cost pressure
+## 🧮 Metrics & Assumptions
 
-Borderline — near break-even or high freight risk
+### Core Metrics
 
-Loss-making — negative profit or repeated loss behavior
+- Revenue per order  
+- Revenue per customer  
+- Estimated cost per order  
+- Freight cost  
+- Net profit  
+- Freight ratio  
 
-This segmentation is designed for decision-making, not clustering aesthetics.
+### Cost Assumption
 
-Phase 5 — Machine Learning (Supporting Role)
-ML Objective
+Actual product cost is unavailable.  
+A **60% revenue-based cost proxy** is applied consistently.
 
-Predict whether a customer is loss-making, to support incentive decisions.
+---
 
-Model
+## 🚨 Loss-Making Customer Definition
 
-Logistic Regression (baseline)
+A customer is classified as **loss-making** if multiple signals indicate risk:
 
-Features
+- Negative lifetime net profit  
+- High freight-to-revenue ratio  
+- Repeated low reviews  
+- Repeated loss-making orders  
 
-Freight ratio
+No assumptions beyond what the data supports.
 
-Average order value
+---
 
-Order intensity
+## 📁 Project Structure
 
-Total order count
-
-Key Result
-
-Even after removing outcome-derived features, the model achieves very high performance using behavioral and logistics pressure signals.
-
-Important Limitation (Explicit)
-
-Features summarize full customer history, making the model a retrospective risk classifier, not a real-time predictor.
-
-ML is used here to validate patterns and standardize risk scoring, not to claim future omniscience.
-
-This limitation is documented intentionally.
-
-Phase 6 — Deployment (Decision Support)
-
-A lightweight Streamlit dashboard is used to present:
-
-Customer segment
-
-Key profitability drivers
-
-ML risk score
-
-Incentive recommendation
-
-The system does not automate decisions.
-It standardizes and supports them.
-
-🧮 Metrics & Assumptions
-Core Metrics
-
-Revenue per order
-
-Revenue per customer
-
-Estimated cost per order
-
-Freight cost
-
-Net profit (order & customer level)
-
-Freight ratio (freight / revenue)
-
-Cost Assumption
-
-Actual product cost is not available in the dataset.
-A conservative 60% revenue-based cost assumption is applied consistently and explicitly documented.
-
-🚨 Loss-Making Customer Definition (Data-Honest)
-
-A customer is classified as loss-making if multiple economic signals indicate unviability:
-
-❌ Negative lifetime net profit
-
-🚚 High freight-to-revenue ratio
-
-⭐ Repeated low reviews (average ≤ 2, with sufficient orders)
-
-🔁 Repeated loss-making orders
-
-No assumptions about fraud or returns beyond what the data supports.
-
-📁 Project Structure
 ├── sql/
 │   ├── schema.sql
 │   ├── load_data.sql
 │   ├── order_profit.sql
 │   ├── customer_profit.sql
 │   └── bad_customers.sql
+    └── order_customer_profit.sql
+
 │
 ├── notebooks/
 │   ├── 02_business_storytelling.ipynb
@@ -200,39 +176,39 @@ No assumptions about fraud or returns beyond what the data supports.
 ├── requirements.txt
 └── README.md
 
-🧰 Tech Stack
 
-PostgreSQL — analytics warehouse
+---
 
-SQL (Views, Joins, Aggregations) — business logic
+## 🧰 Tech Stack
 
-Python (Pandas, Scikit-learn) — analysis & ML
+- PostgreSQL  
+- SQL (Views, Joins, Aggregations)  
+- Python (Pandas, Scikit-learn)  
+- Streamlit  
+- Git / GitHub  
 
-Streamlit — decision-support deployment
+---
 
-Git/GitHub — versioned analytics workflow
+## 💡 Business Recommendations
 
-💡 Business Recommendations
+- Stop incentives based only on revenue  
+- Introduce profitability-aware rules  
+- Restrict free shipping for high-risk customers  
+- Monitor borderline customers carefully  
 
-Stop tying incentives purely to revenue or order volume
+---
 
-Introduce profitability-aware incentive rules
+## 🔮 Future Improvements
 
-Restrict free shipping and discounts for high-risk customers
+- Time-aware features  
+- Return / refund data  
+- Policy simulation  
 
-Monitor borderline customers instead of rewarding blindly
+---
 
-🔮 Future Improvements
+## 👤 Author
 
-Time-aware features for early prediction
+**Devu**  
+Engineering Student | Data Analytics & Business Intelligence  
 
-Return and refund data integration
-
-Policy simulation to estimate profit uplift
-
-👤 Author
-
-Devu
-Engineering Student | Data Analytics & Business Intelligence
-
-
+> This project prioritizes **business correctness and transparency** over flashy models.
