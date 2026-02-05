@@ -154,14 +154,14 @@ No assumptions beyond what the data supports.
 
 ## 📁 Project Structure
 
+📁 Project Structure
 ├── sql/
 │   ├── schema.sql
 │   ├── load_data.sql
 │   ├── order_profit.sql
 │   ├── customer_profit.sql
-│   └── bad_customers.sql
-    └── order_customer_profit.sql
-
+│   ├── bad_customers.sql
+│   └── order_customer_profit.sql
 │
 ├── notebooks/
 │   ├── 02_business_storytelling.ipynb
@@ -173,6 +173,7 @@ No assumptions beyond what the data supports.
 │   └── streamlit_app.py
 │
 ├── reports/
+│
 ├── requirements.txt
 └── README.md
 
