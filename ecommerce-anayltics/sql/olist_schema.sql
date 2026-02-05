@@ -134,7 +134,7 @@ seller_id varchar not null,
 order_item_shipping_limit_date timestamp,
 order_item_price numeric(10,2),
 order_item_freight_value numeric(10,2),
-primary key (order_id , product_id),
+primary key (order_id , order_item_id),
 
 constraint fk_items_order
 foreign key (order_id)
@@ -150,7 +150,6 @@ references ecommerce.sellers(seller_id)
 
 );
 select * from ecommerce.order_items;
-select count(*) from ecommerce.order_itmes
 
 
 
